@@ -1,8 +1,9 @@
 package handlers
 
 import (
-	"github.com/takama/router"
 	"net/http"
+
+	"github.com/takama/router"
 )
 
 type User struct {
