@@ -7,12 +7,12 @@ import (
 )
 
 type User struct {
-	Username string `json:"username"`
+	Name string `json:"name"`
 }
 
 func RetrieveUser(c *router.Control) {
 	data := User{
-		Username: c.Get(":id"),
+		Name: c.Get(":id"),
 	}
 	c.Code(http.StatusOK).Body(data)
 }
