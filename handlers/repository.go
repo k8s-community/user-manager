@@ -11,13 +11,14 @@ type Repository struct {
 	Name     string
 }
 
-func CreateRepository(c *router.Control) {
+func (h *Handler) CreateRepository(c *router.Control) {
 	c.Code(http.StatusCreated)
 }
 
-func DeleteRepository(c *router.Control) {
+func (h *Handler) DeleteRepository(c *router.Control) {
 	data := Repository{
 		Name: c.Get(":id"),
 	}
+
 	c.Code(http.StatusOK).Body(data)
 }

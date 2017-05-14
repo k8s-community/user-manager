@@ -1,6 +1,9 @@
 package main
 
 import (
+	"log"
+	"os"
+
 	"github.com/takama/router"
 	"github.com/vsaveliev/user-manager/handlers"
 )
@@ -9,19 +12,30 @@ const (
 	apiPrefix = "/api/v1"
 )
 
-func Hello(c *router.Control) {
-	c.Body("Hello world")
-}
-
 func main() {
+	keys := []string{
+		"USERMAN_SERVICE_PORT",
+	}
+	h := &handlers.Handler{
+		Stdlog: log.New(os.Stdout, "[USERMAN:INFO]: ", log.LstdFlags),
+		Errlog: log.New(os.Stderr, "[USERMAN:ERROR]: ", log.LstdFlags),
+		Env:    make(map[string]string, len(keys)),
+	}
+	for _, key := range keys {
+		value := os.Getenv(key)
+		if value == "" {
+			h.Errlog.Fatalf("%s environment variable was not set", key)
+		}
+		h.Env[key] = value
+	}
+
 	r := router.New()
-	r.GET("/hello", Hello)
 
-	r.GET(apiPrefix+"/user/:id", handlers.RetrieveUser)
-	r.POST(apiPrefix+"/user", handlers.CreateUser)
+	r.GET(apiPrefix+"/user/:id", h.RetrieveUser)
+	r.POST(apiPrefix+"/user", h.CreateUser)
 
-	r.POST(apiPrefix+"/repository", handlers.CreateRepository)
-	r.DELETE(apiPrefix+"/repository/:id", handlers.DeleteRepository)
+	r.POST(apiPrefix+"/repository", h.CreateRepository)
+	r.DELETE(apiPrefix+"/repository/:id", h.DeleteRepository)
 
-	r.Listen(":8888")
+	r.Listen(":" + h.Env["USERMAN_SERVICE_PORT"])
 }
