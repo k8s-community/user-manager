@@ -25,7 +25,7 @@ func (r *RepositoryService) Create(rep Repository) error {
 }
 
 func (r *RepositoryService) Delete(rep Repository) error {
-	urlStr := repositoryURL + "/" + *rep.Username + "_" + *rep.Name
+	urlStr := repositoryURL + "/" + rep.Username + "_" + rep.Name
 
 	req, err := r.client.NewRequest(deleteMethod, urlStr, nil)
 	if err != nil {
@@ -41,13 +41,13 @@ func (r *RepositoryService) Delete(rep Repository) error {
 }
 
 type Repository struct {
-	Username *string
-	Name     *string
+	Username string
+	Name     string
 }
 
 func NewRepository(username string, repName string) *Repository {
 	return &Repository{
-		Username: &username,
-		Name:     &repName,
+		Username: username,
+		Name:     repName,
 	}
 }

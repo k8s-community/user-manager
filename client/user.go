@@ -23,11 +23,11 @@ func (u *UserService) Sync(user User) error {
 }
 
 type User struct {
-	Name *string `json:"name"`
+	Name string `json:"name"`
 }
 
 func NewUser(username string) *User {
 	return &User{
-		Name: &username,
+		Name: username,
 	}
 }
