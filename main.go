@@ -32,7 +32,8 @@ func main() {
 	r := router.New()
 
 	r.GET(apiPrefix+"/user/:id", h.RetrieveUser)
-	r.POST(apiPrefix+"/user", h.CreateUser)
+
+	r.PUT(apiPrefix+"/sync-user", h.SyncUser)
 
 	r.POST(apiPrefix+"/repository", h.CreateRepository)
 	r.DELETE(apiPrefix+"/repository/:id", h.DeleteRepository)

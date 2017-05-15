@@ -18,7 +18,7 @@ func (h *Handler) RetrieveUser(c *router.Control) {
 	c.Code(http.StatusOK).Body(data)
 }
 
-func (h *Handler) CreateUser(c *router.Control) {
+func (h *Handler) SyncUser(c *router.Control) {
 	/*
 		1. namespace с именем как имя аккаунта на github
 		2. role и rolebinding в этом namecpace с правами админа в этом namespace
@@ -33,5 +33,5 @@ func (h *Handler) CreateUser(c *router.Control) {
 	//createJenkinsJob(createJobParams)
 	//registerChart(username, repName)
 
-	c.Code(http.StatusCreated)
+	c.Code(http.StatusOK)
 }
