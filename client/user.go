@@ -9,7 +9,7 @@ type UserService struct {
 }
 
 func (u *UserService) Sync(user User) error {
-	req, err := u.client.NewRequest(postMethod, userUrlStr, u)
+	req, err := u.client.NewRequest(postMethod, userUrlStr, user)
 	if err != nil {
 		return err
 	}

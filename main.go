@@ -35,8 +35,5 @@ func main() {
 
 	r.PUT(apiPrefix+"/sync-user", h.SyncUser)
 
-	r.POST(apiPrefix+"/repository", h.CreateRepository)
-	r.DELETE(apiPrefix+"/repository/:id", h.DeleteRepository)
-
 	r.Listen(":" + h.Env["USERMAN_SERVICE_PORT"])
 }

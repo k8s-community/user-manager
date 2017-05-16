@@ -28,8 +28,7 @@ type Client struct {
 	BaseURL *url.URL
 
 	// Services used for talking to different parts of the API.
-	User       *UserService
-	Repository *RepositoryService
+	User *UserService
 }
 
 func NewClient(httpClient *http.Client, baseUrl string) (*Client, error) {
@@ -47,7 +46,6 @@ func NewClient(httpClient *http.Client, baseUrl string) (*Client, error) {
 	}
 
 	c.User = &UserService{client: c}
-	c.Repository = &RepositoryService{client: c}
 
 	return c, nil
 }
