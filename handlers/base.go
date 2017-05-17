@@ -4,6 +4,7 @@ import (
 	"log"
 )
 
+// Handler defines
 type Handler struct {
 	Stdlog *log.Logger
 	Errlog *log.Logger
