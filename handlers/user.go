@@ -6,8 +6,8 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
+	"github.com/k8s-community/user-manager/k8s"
 	"github.com/takama/router"
-	"github.com/vsaveliev/user-manager/k8s"
 )
 
 // User defines
