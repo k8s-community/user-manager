@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/k8s-community/user-manager/handlers"
 	"github.com/takama/router"
-	"github.com/vsaveliev/user-manager/handlers"
 )
 
 const (
