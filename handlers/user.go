@@ -33,7 +33,7 @@ func (h *Handler) SyncUser(c *router.Control) {
 		return
 	}
 
-	if user.Name == "" {
+	if len(user.Name) == 0 {
 		c.Code(http.StatusBadRequest).Body(nil)
 		return
 	}
