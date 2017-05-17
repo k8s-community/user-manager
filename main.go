@@ -12,9 +12,12 @@ const (
 	apiPrefix = "/api/v1"
 )
 
+// main function
 func main() {
 	keys := []string{
 		"USERMAN_SERVICE_PORT",
+		"DOCKER_REGISTRY_SECRET_NAME", "TLS_SECRET_NAME",
+		"K8S_HOST", "K8S_TOKEN",
 	}
 	h := &handlers.Handler{
 		Stdlog: log.New(os.Stdout, "[USERMAN:INFO]: ", log.LstdFlags),
@@ -31,9 +34,9 @@ func main() {
 
 	r := router.New()
 
-	r.GET(apiPrefix+"/user/:id", h.RetrieveUser)
-
 	r.PUT(apiPrefix+"/sync-user", h.SyncUser)
+
+	h.Stdlog.Printf("start listening port %s", h.Env["USERMAN_SERVICE_PORT"])
 
 	r.Listen(":" + h.Env["USERMAN_SERVICE_PORT"])
 }

@@ -20,6 +20,7 @@ const (
 	apiPrefix = "/api/v1"
 )
 
+// Client defines
 type Client struct {
 	// HTTP client used to communicate with the API.
 	client *http.Client
@@ -31,6 +32,7 @@ type Client struct {
 	User *UserService
 }
 
+// NewClient creates a new Client instance
 func NewClient(httpClient *http.Client, baseUrl string) (*Client, error) {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
@@ -50,6 +52,7 @@ func NewClient(httpClient *http.Client, baseUrl string) (*Client, error) {
 	return c, nil
 }
 
+// NewRequest creates a new http.Request instance
 func (c *Client) NewRequest(method string, urlStr string, body interface{}) (*http.Request, error) {
 	rel, err := url.Parse(apiPrefix + urlStr)
 	if err != nil {
