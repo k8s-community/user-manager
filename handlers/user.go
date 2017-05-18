@@ -38,7 +38,7 @@ func (h *Handler) SyncUser(c *router.Control) {
 		return
 	}
 
-	h.Stdlog.Printf("try to activate user %s", user.Name)
+	h.Infolog.Printf("try to activate user %s", user.Name)
 
 	client, err := k8s.NewClient(h.Env["K8S_HOST"], h.Env["K8S_TOKEN"])
 	if err != nil {
@@ -49,7 +49,7 @@ func (h *Handler) SyncUser(c *router.Control) {
 
 	namespace, _ := client.GetNamespace(user.Name)
 	if namespace != nil {
-		h.Stdlog.Printf("user %s already exists", user.Name)
+		h.Infolog.Printf("user %s already exists", user.Name)
 		c.Code(http.StatusOK).Body(nil)
 		return
 	}
@@ -73,5 +73,5 @@ func (h *Handler) SyncUser(c *router.Control) {
 
 	c.Code(http.StatusOK).Body(nil)
 
-	h.Stdlog.Printf("user %s is activated", user.Name)
+	h.Infolog.Printf("user %s is activated", user.Name)
 }
