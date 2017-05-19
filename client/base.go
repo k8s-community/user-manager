@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 )
@@ -33,13 +34,13 @@ type Client struct {
 }
 
 // NewClient creates a new Client instance
-func NewClient(httpClient *http.Client, baseUrl string) (*Client, error) {
+func NewClient(httpClient *http.Client, baseURL string) (*Client, error) {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
 	}
-	baseURL, err := url.Parse(baseUrl)
+	baseURL, err := url.Parse(baseURL)
 	if err != nil {
-		return nil, fmt.Errorf("user manager client: cannot parse url %s: %s", baseUrl, err)
+		return nil, fmt.Errorf("user manager client: cannot parse url %s: %s", baseURL, err)
 	}
 
 	c := &Client{
@@ -70,6 +71,8 @@ func (c *Client) NewRequest(method string, urlStr string, body interface{}) (*ht
 		}
 	}
 
+	// TODO: add better logger here
+	log.Printf("Send %s request to %s\n", method, u.String())
 	req, err := http.NewRequest(method, u.String(), buf)
 	if err != nil {
 		return nil, fmt.Errorf("cannot send request: %s", err)
