@@ -34,13 +34,14 @@ type Client struct {
 }
 
 // NewClient creates a new Client instance
-func NewClient(httpClient *http.Client, baseURL string) (*Client, error) {
+func NewClient(httpClient *http.Client, strBaseURL string) (*Client, error) {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
 	}
-	baseURL, err := url.Parse(baseURL)
+
+	baseURL, err := url.Parse(strBaseURL)
 	if err != nil {
-		return nil, fmt.Errorf("user manager client: cannot parse url %s: %s", baseURL, err)
+		return nil, fmt.Errorf("user manager client: cannot parse url %s: %s", strBaseURL, err)
 	}
 
 	c := &Client{
@@ -55,12 +56,10 @@ func NewClient(httpClient *http.Client, baseURL string) (*Client, error) {
 
 // NewRequest creates a new http.Request instance
 func (c *Client) NewRequest(method string, urlStr string, body interface{}) (*http.Request, error) {
-	rel, err := url.Parse(apiPrefix + urlStr)
+	u, err := url.Parse(c.BaseURL.String() + apiPrefix + urlStr)
 	if err != nil {
 		return nil, fmt.Errorf("cannot parse url %s: %s", apiPrefix+urlStr, err)
 	}
-
-	u := c.BaseURL.ResolveReference(rel)
 
 	var buf io.ReadWriter
 	if body != nil {
