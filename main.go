@@ -43,6 +43,7 @@ func main() {
 	r.PUT(apiPrefix+"/sync-user", h.SyncUser)
 
 	h.Infolog.Printf("start listening port %s", h.Env["USERMAN_SERVICE_PORT"])
+	h.Infolog.Printf("registered routes are: %+v", r.Routes())
 
 	go r.Listen(":" + h.Env["USERMAN_SERVICE_PORT"])
 
