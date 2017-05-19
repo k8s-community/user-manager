@@ -34,13 +34,14 @@ type Client struct {
 }
 
 // NewClient creates a new Client instance
-func NewClient(httpClient *http.Client, baseURL string) (*Client, error) {
+func NewClient(httpClient *http.Client, strBaseURL string) (*Client, error) {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
 	}
-	baseURL, err := url.Parse(baseURL)
+
+	baseURL, err := url.Parse(strBaseURL)
 	if err != nil {
-		return nil, fmt.Errorf("user manager client: cannot parse url %s: %s", baseURL, err)
+		return nil, fmt.Errorf("user manager client: cannot parse url %s: %s", strBaseURL, err)
 	}
 
 	c := &Client{
