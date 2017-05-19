@@ -3,7 +3,7 @@ package client
 import "net/http"
 
 const (
-	userUrlStr = "/user"
+	userUrlStr = "/sync-user"
 )
 
 // UserService defines
@@ -13,7 +13,7 @@ type UserService struct {
 
 // Sync sends request for user activation in k8s system
 func (u *UserService) Sync(user *User) (int, error) {
-	req, err := u.client.NewRequest(postMethod, userUrlStr, user)
+	req, err := u.client.NewRequest(putMethod, userUrlStr, user)
 	if err != nil {
 		return http.StatusBadRequest, err
 	}
