@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"net/http"
-
 	"encoding/json"
 	"io/ioutil"
+	"net/http"
+	"strings"
 
 	"github.com/k8s-community/user-manager/k8s"
 	"github.com/takama/router"
@@ -47,14 +47,15 @@ func (h *Handler) SyncUser(c *router.Control) {
 		return
 	}
 
-	namespace, _ := client.GetNamespace(user.Name)
+	k8sUser := strings.ToLower(user.Name)
+	namespace, _ := client.GetNamespace(k8sUser)
 	if namespace != nil {
-		h.Infolog.Printf("user %s already exists", user.Name)
+		h.Infolog.Printf("user %s already exists", k8sUser)
 		c.Code(http.StatusOK).Body(nil)
 		return
 	}
 
-	err = client.CreateNamespace(user.Name)
+	err = client.CreateNamespace(k8sUser)
 	if err != nil {
 		h.Errlog.Printf("%s", err)
 		c.Code(http.StatusInternalServerError).Body(nil)
@@ -63,7 +64,7 @@ func (h *Handler) SyncUser(c *router.Control) {
 
 	secretNames := []string{h.Env["DOCKER_REGISTRY_SECRET_NAME"], h.Env["TLS_SECRET_NAME"]}
 	for _, secretName := range secretNames {
-		err = client.CopySecret(secretName, "default", user.Name)
+		err = client.CopySecret(secretName, "default", k8sUser)
 		if err != nil {
 			h.Errlog.Printf("%s", err)
 			c.Code(http.StatusInternalServerError).Body(nil)
@@ -73,5 +74,5 @@ func (h *Handler) SyncUser(c *router.Control) {
 
 	c.Code(http.StatusOK).Body(nil)
 
-	h.Infolog.Printf("user %s is activated", user.Name)
+	h.Infolog.Printf("user %s is activated", k8sUser)
 }
