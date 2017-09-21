@@ -7,7 +7,7 @@ ENV K8S_TOKEN "Token is for access to k8s API"
 ENV TLS_SECRET_NAME "tls-secret"
 ENV DOCKER_REGISTRY_SECRET_NAME "registry-pull-secret"
 
-COPY certs /etc/ssl/
+COPY certs /etc/ssl/certs/
 COPY user-manager /
 
 EXPOSE $USERMAN_LOCAL_PORT
