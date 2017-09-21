@@ -20,7 +20,7 @@ func main() {
 	keys := []string{
 		"USERMAN_LOCAL_PORT",
 		"DOCKER_REGISTRY_SECRET_NAME", "TLS_SECRET_NAME",
-		"K8S_HOST", "K8S_TOKEN",
+		"K8S_BASE_URL", "K8S_TOKEN",
 	}
 	h := &handlers.Handler{
 		Infolog: log.New(os.Stdout, "[USERMAN:INFO]: ", log.LstdFlags),

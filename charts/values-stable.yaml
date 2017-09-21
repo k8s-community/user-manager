@@ -36,7 +36,7 @@ image:
   ##
   registry: registry.k8s.community/k8s-community
   name: user-manager
-  tag: 0.2.0
+  tag: 0.2.1
 
   ## Docker Registry/Hub auth secret name, always use `registry-pull-secret` if registry inside if k8s
   ##
@@ -114,6 +114,10 @@ externalServices:
   - name: cicd
     host: k8s-build-01
     port: 8080
+
+clients:
+  k8s:
+    baseURL: https://master.k8s.community
 
 ## Resource requests and limits
 ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
