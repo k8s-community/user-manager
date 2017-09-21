@@ -115,6 +115,10 @@ externalServices:
     host: k8s-build-01
     port: 8080
 
+clients:
+  k8s:
+    baseURL: https://master.grahovac.me
+
 ## Resource requests and limits
 ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
 ##
