@@ -117,7 +117,7 @@ externalServices:
 
 clients:
   k8s:
-    baseURL: https://master.k8s.community
+    baseURL: https://dash.k8s.community
 
 ## Resource requests and limits
 ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
