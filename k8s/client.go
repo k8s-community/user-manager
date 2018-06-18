@@ -8,7 +8,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/pkg/api/v1"
 	"k8s.io/client-go/rest"
-)
+	)
 
 // Client defines
 type Client struct {
@@ -67,6 +67,32 @@ func (c *Client) CreateNamespace(namespaceName string) error {
 		return fmt.Errorf("cannot create namespace: %s", err)
 	}
 
+	return nil
+}
+
+func (c *Client) CreateNamespaceAdmin(namespace string) error {
+	/*sa := &v1.ServiceAccount{}
+	sa.APIVersion = "v1"
+	sa.Kind = "ServiceAccount"
+	sa.ObjectMeta.Name = namespace
+	_, err := c.client.ServiceAccounts(namespace).Create(sa)
+	if err != nil {
+		return fmt.Errorf("cannot create service account: %s", err)
+	}
+
+	rb := &v1beta1.ClusterRoleBinding{}
+	c.client.RbacV1beta1Client.ClusterRoles().Get("")
+	subj := v1beta1.Subject{
+		Kind: "ServiceAccount",
+		Name: namespace,
+		Namespace: namespace,
+	}
+	rb.Kind = "ClusterRoleBinding"
+	rb.ObjectMeta.Name = namespace + "-admin"
+	rb.Subjects = append(rb.Subjects, subj)
+
+	//c.client.RbacV1beta1Client.ClusterRoleBindings().Create()
+*/
 	return nil
 }
 
