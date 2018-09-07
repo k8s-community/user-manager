@@ -34,7 +34,7 @@ workflow: prod
 image:
   ## Docker Registry/Hub image name and tag
   ##
-  registry: docker.io/k8sc
+  registry: gcr.io/ws-aug-16
   name: k8s-community-user-manager
   tag: 0.4.2
 
