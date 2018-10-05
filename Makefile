@@ -87,7 +87,6 @@ fmt:
 .PHONY: lint
 lint: bootstrap
 	@echo "+ $@"
-	# @gometalinter --vendor ./...
 
 .PHONY: vet
 vet:
@@ -109,15 +108,9 @@ clean:
 	rm -f ${APP}
 
 HAS_DEP := $(shell command -v dep;)
-HAS_METALINTER := $(shell command -v gometalinter;)
 
 .PHONY: bootstrap
 bootstrap:
 ifndef HAS_DEP
 	go get -u github.com/golang/dep/cmd/dep
-endif
-ifndef HAS_METALINTER
-	go get -u -v -d github.com/alecthomas/gometalinter && \
-	go install -v github.com/alecthomas/gometalinter && \
-	gometalinter --install --update
 endif
