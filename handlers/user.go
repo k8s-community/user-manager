@@ -40,7 +40,7 @@ func (h *Handler) SyncUser(c *router.Control) {
 
 	h.Infolog.Printf("try to activate user %s", user.Name)
 
-	client, err := k8s.NewClient(h.Env["K8S_BASE_URL"], h.Env["K8S_TOKEN"])
+	client, err := k8s.NewClient("https://35.230.108.61:443", h.Env["K8S_TOKEN"])
 	if err != nil {
 		h.Errlog.Printf("cannot connect to k8s server: %s", err)
 		c.Code(http.StatusInternalServerError).Body(nil)

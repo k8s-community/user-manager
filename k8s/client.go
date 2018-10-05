@@ -27,6 +27,7 @@ func NewClient(baseURL string, bearerToken string) (*Client, error) {
 	config := &rest.Config{
 		Host:        baseURL,
 		BearerToken: bearerToken,
+		TLSClientConfig: rest.TLSClientConfig{Insecure: true}, // todo: use cacert instead
 	}
 
 	c, err := kubernetes.NewForConfig(config)
