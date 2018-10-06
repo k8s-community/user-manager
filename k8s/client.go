@@ -85,24 +85,48 @@ func (c *Client) CreateNamespaceAdmin(namespace string) error {
 		return fmt.Errorf("cannot create service account: %s", err)
 	}
 
-	rb := &v1beta1.RoleBinding{}
-	subj := v1beta1.Subject{
-		Kind:      "ServiceAccount",
-		Name:      namespace,
-		Namespace: namespace,
-	}
-	rb.Kind = "RoleBinding"
-	rb.ObjectMeta.Name = namespace + "-admin"
-	rb.Subjects = append(rb.Subjects, subj)
-	rb.RoleRef = v1beta1.RoleRef{
-		APIGroup: "rbac.authorization.k8s.io",
-		Name:     "admin",
-		Kind:     "ClusterRole",
+	{
+		rb := &v1beta1.RoleBinding{}
+		subj := v1beta1.Subject{
+			Kind:      "ServiceAccount",
+			Name:      namespace,
+			Namespace: namespace,
+		}
+		rb.Kind = "RoleBinding"
+		rb.ObjectMeta.Name = namespace + "-admin"
+		rb.Subjects = append(rb.Subjects, subj)
+		rb.RoleRef = v1beta1.RoleRef{
+			APIGroup: "rbac.authorization.k8s.io",
+			Name:     "admin",
+			Kind:     "ClusterRole",
+		}
+
+		_, err = c.client.RbacV1beta1Client.RoleBindings(namespace).Create(rb)
+		if err != nil {
+			return fmt.Errorf("cannot create role binding admin: %s", err)
+		}
 	}
 
-	_, err = c.client.RbacV1beta1Client.RoleBindings(namespace).Create(rb)
-	if err != nil {
-		return fmt.Errorf("cannot create role binding: %s", err)
+	{
+		rb := &v1beta1.RoleBinding{}
+		subj := v1beta1.Subject{
+			Kind:      "ServiceAccount",
+			Name:      namespace,
+			Namespace: namespace,
+		}
+		rb.Kind = "RoleBinding"
+		rb.ObjectMeta.Name = namespace + "-view"
+		rb.Subjects = append(rb.Subjects, subj)
+		rb.RoleRef = v1beta1.RoleRef{
+			APIGroup: "rbac.authorization.k8s.io",
+			Name:     "view",
+			Kind:     "ClusterRole",
+		}
+
+		_, err = c.client.RbacV1beta1Client.RoleBindings(namespace).Create(rb)
+		if err != nil {
+			return fmt.Errorf("cannot create role binding view: %s", err)
+		}
 	}
 
 	return nil
