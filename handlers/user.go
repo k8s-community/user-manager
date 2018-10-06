@@ -72,6 +72,13 @@ func (h *Handler) SyncUser(c *router.Control) {
 		}
 	}
 
+	err = client.CreateNamespaceAdmin(k8sUser)
+	if err != nil {
+		h.Errlog.Printf("%s", err)
+		c.Code(http.StatusInternalServerError).Body(nil)
+		return
+	}
+
 	c.Code(http.StatusOK).Body(nil)
 
 	h.Infolog.Printf("user %s is activated", k8sUser)
