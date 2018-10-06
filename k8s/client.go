@@ -96,7 +96,7 @@ func (c *Client) CreateNamespaceAdmin(namespace string) error {
 	rb.RoleRef = v1beta1.RoleRef{
 		APIGroup: "rbac.authorization.k8s.io",
 		Name:     "admin",
-		Kind:     "Role",
+		Kind:     "ClusterRole",
 	}
 
 	_, err = c.client.RbacV1beta1Client.RoleBindings(namespace).Create(rb)
