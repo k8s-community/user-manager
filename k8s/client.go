@@ -7,8 +7,9 @@ import (
 	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/pkg/api/v1"
+	"k8s.io/client-go/pkg/apis/rbac/v1beta1"
 	"k8s.io/client-go/rest"
-	)
+)
 
 // Client defines
 type Client struct {
@@ -25,8 +26,8 @@ type Client struct {
 // NewClient initializes client for k8s API
 func NewClient(baseURL string, bearerToken string) (*Client, error) {
 	config := &rest.Config{
-		Host:        baseURL,
-		BearerToken: bearerToken,
+		Host:            baseURL,
+		BearerToken:     bearerToken,
 		TLSClientConfig: rest.TLSClientConfig{Insecure: true}, // todo: use cacert instead
 	}
 
@@ -70,29 +71,39 @@ func (c *Client) CreateNamespace(namespaceName string) error {
 	return nil
 }
 
+// CreateNamespaceAdmin creates admin service account.
 func (c *Client) CreateNamespaceAdmin(namespace string) error {
-	/*sa := &v1.ServiceAccount{}
+	sa := &v1.ServiceAccount{}
 	sa.APIVersion = "v1"
 	sa.Kind = "ServiceAccount"
 	sa.ObjectMeta.Name = namespace
+	sa.ObjectMeta.Namespace = namespace
+
 	_, err := c.client.ServiceAccounts(namespace).Create(sa)
 	if err != nil {
 		return fmt.Errorf("cannot create service account: %s", err)
 	}
 
-	rb := &v1beta1.ClusterRoleBinding{}
-	c.client.RbacV1beta1Client.ClusterRoles().Get("")
+	rb := &v1beta1.RoleBinding{}
 	subj := v1beta1.Subject{
-		Kind: "ServiceAccount",
-		Name: namespace,
+		Kind:      "ServiceAccount",
+		Name:      namespace,
 		Namespace: namespace,
 	}
-	rb.Kind = "ClusterRoleBinding"
+	rb.Kind = "RoleBinding"
 	rb.ObjectMeta.Name = namespace + "-admin"
 	rb.Subjects = append(rb.Subjects, subj)
+	rb.RoleRef = v1beta1.RoleRef{
+		APIGroup: "rbac.authorization.k8s.io",
+		Name:     "admin",
+		Kind:     "Role",
+	}
 
-	//c.client.RbacV1beta1Client.ClusterRoleBindings().Create()
-*/
+	_, err = c.client.RbacV1beta1Client.RoleBindings(namespace).Create(rb)
+	if err != nil {
+		return fmt.Errorf("cannot create role binding: %s", err)
+	}
+
 	return nil
 }
 
