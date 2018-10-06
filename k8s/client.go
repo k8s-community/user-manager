@@ -2,6 +2,7 @@ package k8s
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -105,6 +106,33 @@ func (c *Client) CreateNamespaceAdmin(namespace string) error {
 	}
 
 	return nil
+}
+
+func (c *Client) GetNamespaceToken(namespace string) (*Token, error) {
+	secrets, err := c.client.Secrets(namespace).List(meta_v1.ListOptions{})
+	if err != nil {
+		return nil, fmt.Errorf("cannot get lis of secrets: %s", err)
+	}
+
+	var tokenSecr v1.Secret
+	found := false
+	for _, secr := range secrets.Items {
+		if strings.HasPrefix(secr.ObjectMeta.Name, namespace+"-token") {
+			tokenSecr = secr
+			found = true
+			break
+		}
+	}
+
+	if !found {
+		return nil, fmt.Errorf("cannot find token secret")
+	}
+
+	tok := Token{
+		Cert:  string(tokenSecr.Data["ca.crt"]),
+		Token: string(tokenSecr.Data["token"]),
+	}
+	return &tok, nil
 }
 
 // CopySecret creates copy of secret with name secretName from defined namespace

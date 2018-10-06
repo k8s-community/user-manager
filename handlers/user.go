@@ -79,7 +79,15 @@ func (h *Handler) SyncUser(c *router.Control) {
 		return
 	}
 
-	c.Code(http.StatusOK).Body(nil)
+	tok, err := client.GetNamespaceToken(k8sUser)
+	if err != nil {
+		h.Errlog.Printf("%s", err)
+		c.Code(http.StatusInternalServerError).Body(nil)
+		return
+	}
+
+	h.Infolog.Printf("the token is: %v", tok)
+	c.Code(http.StatusOK).Body(tok)
 
 	h.Infolog.Printf("user %s is activated", k8sUser)
 }
